@@ -239,6 +239,7 @@ def battle():
 	cprint(("EXP Gained: " + str(endNumber)), "white", "on_magenta")
 	int(endNumber)
 	exp += endNumber
+	checkExpLevel(playerLevel)
 	input("")
 
 def monsterChance():
@@ -304,6 +305,11 @@ def parseCommand(command):
 	if command == "":
 		print("You chose to move on....")
 
+	if command == "i":
+		os.system("cls")
+		mainScreen()
+		itemLib.viewItems(playerItems, itemDesc)
+
 	## CLASS STUFF ##
 	if command == "frajan":
 		health = 24
@@ -324,8 +330,8 @@ def parseCommand(command):
 		strength = 2
 		rank = "Oslid"
 
-def checkForEvents():
-	if position == 0:
+def checkForEvents(playerItems, itemDesc, seenDialogues):
+	if position == 0 and seenDialogues == 0:
 		os.system("cls")
 		mainScreen()
 		print("Adventurer!")
@@ -380,7 +386,9 @@ def checkForEvents():
 		os.system("cls")
 		mainScreen()
 
-	if position == 1:
+		seenDialogues += 1
+
+	if position == 1 and seenDialogues == 1:
 		os.system("cls")
 		mainScreen()
 		print("You need to be careful! Dangerous monsters roam these lands....")
@@ -388,7 +396,7 @@ def checkForEvents():
 		print("Some areas are under control - but others are ruled by evil beasts.")
 		print("If an area is unsafe, this will appear at the top of your screen: ")
 		print("")
-		print("(Location is hostile.... watch your step!)")
+		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
 		print("")
 		print("If a creature ever attacks you, your best option is to use brute force.")
 		print("However, with the right amount of training, you can master spells too.")
@@ -406,7 +414,9 @@ def checkForEvents():
 		os.system("cls")
 		mainScreen()
 
-	if position == 5:
+		seenDialogues += 1
+
+	if position == 5 and seenDialogues == 2:
 		os.system("cls")
 		mainScreen()
 		print("What's this?")
@@ -415,6 +425,10 @@ def checkForEvents():
 		print("It is covered in tiny jewels, all of which glint in the sun.")
 		print("")
 		playerItems, itemDesc = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc)
+
+		seenDialogues += 1
+
+	return seenDialogues
 
 def titleScreen():
 	print("")
@@ -476,21 +490,14 @@ def addLevel(amount):
 
 def checkExpLevel(playerLevel):
 	# Checks the level of EXP. If it's high enough, the player goes up a level. #
-	if exp >= 50 and exp < 100:
+	if exp in range(50, 100):
 		addLevel(1)
-		spellLib.addSpell("Flux", playerSpells)
-	elif exp >= 100 and exp < 500:
+		spellLib.addSpell("Swipe", playerSpells)
+	elif exp in range(101, 200):
 		addLevel(1)
 		spellLib.addSpell("Barrage", playerSpells)
-	elif exp >= 500 and exp < 1000:
-		addLevel(1)
-		spellLib.addSpell("Cloak", playerSpells)
-	elif exp >= 1000 and exp < 2000:
-		addLevel(1)
-	elif exp >= 2000 and exp < 5000:
-		addLevel(1)
-	elif exp >= 5000 and exp < 10000:
-		addLevel(1)
+	elif exp in range(201, 500):
+		pass
 
 ######################## END OF FUNCTIONS ###########################
 
@@ -498,12 +505,14 @@ global leave
 global playerSpells
 global playerItems
 global timer
+global seenDialogues
 
 position = 0
 playerLevel = 1
 playerClass = ""
 exp = 0
 leave = False
+seenDialogues = 0
 
 # Battle Related #
 
@@ -519,11 +528,11 @@ import itemLib
 locations, descriptions, hostileLocations = locations()
 names, stats, enemyDamage = enemies()
 spells, damage, specialSpells, specialSpellsKeys = spellLib.spells()
-itemDesc = itemLib.itemInit()
+itemDesc, playerItems = itemLib.itemInit()
 
 
 playerSpells = []
-playerItems = []
+
 
 # Other Libraries #
 
@@ -541,15 +550,12 @@ colorama.init()
 
 ######################## END OF SETUP ###########################
 
-playerItems, itemDesc = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc)
-
 titleScreen()
 input("")
 
 while leave!=True:
 	mainScreen()
-	checkExpLevel(playerLevel)
-	checkForEvents()
+	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues)
 	monsterChance()
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
