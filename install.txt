@@ -1,6 +1,0 @@
-cd C:\Python34\The-Saving-of-Chora-master
-
-cd Install
-
-echo "Now installing libraries: "
-

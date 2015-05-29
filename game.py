@@ -128,12 +128,18 @@ def battle():
 		print("")
 		cprint("S - Use a Spell", "white", "on_blue")
 		cprint("B - Basic Attack (deals " + str(strength) + " damage)", "white", "on_blue")
+		cprint("I - Use an Item", "white", "on_blue")
 		int(strength)
 		print("")
 		battleChoice = input("Please enter one of the letters above.... ")
+		battleChoice.lower()
 		if battleChoice == "b":
 			enemyBaseHealth = basicPunch(enemyBaseHealth, strength)
 			timer = 0
+		elif battleChoice == "i":
+			os.system("cls")
+			mainScreen()
+			health, timer = itemLib.useItems(playerItems, itemDesc, specialItems, health)
 		elif battleChoice == "s":
 			int(enemyBaseHealth)
 			os.system("cls")
@@ -329,7 +335,7 @@ def parseCommand(command):
 		strength = 2
 		rank = "Oslid"
 
-def checkForEvents(playerItems, itemDesc, seenDialogues):
+def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 	if position == 0 and seenDialogues == 0:
 		os.system("cls")
 		mainScreen()
@@ -370,7 +376,7 @@ def checkForEvents(playerItems, itemDesc, seenDialogues):
 			print("Please enter something valid....")
 			input("")
 			os.system("cls")
-			checkForEvents()
+			seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
 
 		print("Ah! So you've joined the rank of " + rank + "!")
 		print("That means you'll be starting with " + str(health) + " health.")
@@ -423,7 +429,7 @@ def checkForEvents(playerItems, itemDesc, seenDialogues):
 		print("There appears to be a small pendant on the ground.")
 		print("It is covered in tiny jewels, all of which glint in the sun.")
 		print("")
-		playerItems, itemDesc = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc)
+		playerItems, itemDesc, specialItems = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc, specialItems, None)
 
 		seenDialogues += 1
 
@@ -505,6 +511,7 @@ global playerSpells
 global playerItems
 global timer
 global seenDialogues
+global specialItems
 
 position = 0
 playerLevel = 1
@@ -527,10 +534,11 @@ import itemLib
 locations, descriptions, hostileLocations = locations()
 names, stats, enemyDamage = enemies()
 spells, damage, specialSpells, specialSpellsKeys = spellLib.spells()
-itemDesc, playerItems = itemLib.itemInit()
+itemDesc, playerItems, specialItems = itemLib.itemInit()
 
 
 playerSpells = []
+specialItems = {}
 
 
 # Other Libraries #
@@ -543,18 +551,22 @@ from termcolor import *
 import colorama
 import sys
 import msvcrt
-import bugjar
+
+# Initializing things #
+
 colorama.init()
 
-
 ######################## END OF SETUP ###########################
+
+playerItems, itemDesc, specialItems= itemLib.addItem("Potion", "A bottle of mysterious red liquid.", playerItems, itemDesc, specialItems, "heal")
+playerItems, itemDesc, specialItems = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc, specialItems, None)
 
 titleScreen()
 input("")
 
 while leave!=True:
 	mainScreen()
-	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues)
+	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
 	monsterChance()
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")

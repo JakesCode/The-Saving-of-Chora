@@ -4,8 +4,32 @@
 		"selected_items":
 		[
 			[
-				"pla",
+				"end",
+				"endNumber"
+			],
+			[
+				"player",
 				"playerSpells"
+			],
+			[
+				"see",
+				"seenDialogues"
+			],
+			[
+				"ite",
+				"itemDesc"
+			],
+			[
+				"item",
+				"itemName"
+			],
+			[
+				"pla",
+				"playerItems"
+			],
+			[
+				"view",
+				"viewItems"
 			],
 			[
 				"spell",
@@ -37,10 +61,6 @@
 			],
 			[
 				"pl",
-				"playerLevel"
-			],
-			[
-				"player",
 				"playerLevel"
 			],
 			[
@@ -295,7 +315,7 @@
 			"file": "game.py",
 			"settings":
 			{
-				"buffer_size": 16987,
+				"buffer_size": 17077,
 				"line_ending": "Windows"
 			}
 		},
@@ -311,7 +331,7 @@
 			"file": "itemLib.py",
 			"settings":
 			{
-				"buffer_size": 626,
+				"buffer_size": 971,
 				"line_ending": "Windows"
 			}
 		}
@@ -405,6 +425,7 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/setup.bat",
 		"/C/Users/Jake (King of Cool)/Desktop/Python Adventure Game/spellLib.py",
 		"/C/Users/Jake (King of Cool)/Desktop/Python Adventure Game/spells.py",
 		"/C/Users/Jake (King of Cool)/Desktop/Python Adventure Game/python adventure game.sublime-project",
@@ -529,15 +550,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16987,
+						"buffer_size": 17077,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14849,
-								14849
+								16471,
+								16471
 							]
 						],
 						"settings":
@@ -549,7 +570,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 9405.0,
+						"translation.y": 10806.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -568,8 +589,20 @@
 						"selection":
 						[
 							[
-								2494,
-								2498
+								1198,
+								1198
+							],
+							[
+								1236,
+								1236
+							],
+							[
+								1298,
+								1298
+							],
+							[
+								1307,
+								1307
 							]
 						],
 						"settings":
@@ -592,15 +625,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 626,
+						"buffer_size": 971,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								137,
-								137
+								429,
+								429
 							]
 						],
 						"settings":
@@ -610,7 +643,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,

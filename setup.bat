@@ -26,6 +26,12 @@ cd termcolor-1.1.0
 
 python setup.py install
 
+cd Install
+
+cd pygame
+
+python setup.py install
+
 echo "All done."
 
 pause
