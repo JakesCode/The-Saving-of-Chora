@@ -251,7 +251,6 @@ def monsterChance():
 	chance = randint(1,10)
 	if any(locations[position] in s for s in hostileLocations):
 		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
-		input("")
 		if chance < randint(1,10):
 			battle()
 
@@ -275,6 +274,7 @@ def showHelp():
 	cprint(("S: See current spells."), "blue", "on_white")
 	cprint(("C: See information about your character."), "blue", "on_white")
 	cprint(("I: View your items."), "blue", "on_white")
+	cprint(("B: Move back one location."), "blue", "on_white")
 	print("")
 	print("During battle, colours are used to signal whose turn it is.")
 	cprint("White on BLUE signals that it's YOUR turn.", "white", "on_blue")
@@ -283,10 +283,7 @@ def showHelp():
 	print("Type the letter when the following appears: ")
 	print("		Type a command, type 'help', or press enter to move on.... ")
 	print("")
-	print("Press the Enter key to return....")
-	input("")
-	os.system("cls")
-	mainScreen()
+	cprint("Press the Enter key to continue....", "blue", "on_white")
 
 def basicPunch(enemyBaseHealth, strength):
 	cprint(("Attacked the enemy!"), "grey", "on_green")
@@ -296,7 +293,7 @@ def basicPunch(enemyBaseHealth, strength):
 	enemyBaseHealth-=strength
 	return enemyBaseHealth
 
-def parseCommand(command):
+def parseCommand(command, position):
 	global health
 	global rank
 	global strength
@@ -308,7 +305,14 @@ def parseCommand(command):
 	if command == "c":
 		information()
 	if command == "":
-		print("You chose to move on....")
+		cprint(("You chose to move on...."), "grey", "on_cyan")
+		position += 1
+	if command == "b":
+		if locations[position] == "Home Town":
+			cprint(("You can't go back!"), "grey", "on_cyan")
+		else:
+			cprint(("You chose to go back...."), "grey", "on_cyan")
+			position -= 1
 
 	if command == "i":
 		os.system("cls")
@@ -334,6 +338,8 @@ def parseCommand(command):
 		spellLib.addSpell("Swipe", playerSpells)
 		strength = 2
 		rank = "Oslid"
+
+	return position
 
 def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 	if position == 0 and seenDialogues == 0:
@@ -371,7 +377,7 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 				classChoice = "tezad"
 			if classChoice=="c":
 				classChoice = "oslid"
-			parseCommand(classChoice)
+			parseCommand(classChoice, position)
 		else:
 			print("Please enter something valid....")
 			input("")
@@ -430,6 +436,15 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 		print("It is covered in tiny jewels, all of which glint in the sun.")
 		print("")
 		playerItems, itemDesc, specialItems = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc, specialItems, None)
+
+		seenDialogues += 1
+
+	if position == 8 and seenDialogues == 3:
+		os.system("cls")
+		mainScreen()
+		dialogueLib.say("Alcea", "Oh my! Did you just come from the Jaded Forest?", good)
+		dialogueLib.say("Alcea", "Many have rested here recently due to wounds; it seems that \nwe're losing the forest to the beasts.", good)
+		dialogueLib.say("Alcea", "It's a terrible shame; if we lose the forest to beasts, then \nwe'll lose access to Home Town....", good)
 
 		seenDialogues += 1
 
@@ -530,6 +545,7 @@ timer = 0
 
 import spellLib
 import itemLib
+import dialogueLib
 
 locations, descriptions, hostileLocations = locations()
 names, stats, enemyDamage = enemies()
@@ -555,6 +571,7 @@ import msvcrt
 # Initializing things #
 
 colorama.init()
+good, bad = dialogueLib.initPresets()
 
 ######################## END OF SETUP ###########################
 
@@ -567,8 +584,8 @@ while leave!=True:
 	monsterChance()
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
-	parseCommand(command)
+	position = parseCommand(command, position)
 
 	input("")
-	position += 1
+
 	os.system("cls")
