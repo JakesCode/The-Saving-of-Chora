@@ -239,7 +239,6 @@ def battle():
 	cprint(("EXP Gained: " + str(endNumber)), "white", "on_magenta")
 	int(endNumber)
 	exp += endNumber
-	checkExpLevel(playerLevel)
 	input("")
 
 def monsterChance():
@@ -476,28 +475,28 @@ def titleScreen():
 	while msvcrt.kbhit():
 		msvcrt.getch()
 
-def addLevel(amount):
-	# Making things easier for the 'checkExpLevel' function. #
-	global playerLevel
+# def addLevel(amount):
+# 	# Making things easier for the 'checkExpLevel' function. #
+# 	global playerLevel
 
-	playerLevel += amount
-	cprint("Level Up!", "red", "on_yellow")
-	cprint(("You are now level " + str(playerLevel)), "white", "on_red")
-	int(playerLevel)
-	input("")
-	os.system("cls")
-	mainScreen()
+# 	playerLevel += amount
+# 	cprint("Level Up!", "red", "on_yellow")
+# 	cprint(("You are now level " + str(playerLevel)), "white", "on_red")
+# 	int(playerLevel)
+# 	input("")
+# 	os.system("cls")
+# 	mainScreen()
 
-def checkExpLevel(playerLevel):
-	# Checks the level of EXP. If it's high enough, the player goes up a level. #
-	if exp in range(50, 100):
-		addLevel(1)
-		spellLib.addSpell("Swipe", playerSpells)
-	elif exp in range(101, 200):
-		addLevel(1)
-		spellLib.addSpell("Barrage", playerSpells)
-	elif exp in range(201, 500):
-		pass
+# def checkExpLevel(playerLevel):
+# 	# Checks the level of EXP. If it's high enough, the player goes up a level. #
+# 	if exp in range(50, 100):
+# 		addLevel(1)
+# 		spellLib.addSpell("Swipe", playerSpells)
+# 	elif exp in range(101, 200):
+# 		addLevel(1)
+# 		spellLib.addSpell("Barrage", playerSpells)
+# 	elif exp in range(201, 500):
+# 		pass
 
 ######################## END OF FUNCTIONS ###########################
 
