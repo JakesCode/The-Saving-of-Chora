@@ -7,7 +7,8 @@ def locations():
 	"Cobalt Beck *--": "This crystal-clear stream of water gushes past rocks below you.",
 	"Cobalt Beck Bridge -*-": "The bridge is sturdy, built with wood from the Jaded Forest.",
 	"Cobalt Beck --*": "The path becomes wider here as you enter the next village.",
-	"Emelle Village": "Wooden huts populate the lush green land. The village is famous for its fish."}
+	"Emelle Village": "Wooden huts populate the lush green land. The village is famous for its fish.",
+	"Shaded Path": "A small path in the shade."}
 
 	locations = ["Home Town",
 	"Jaded Forest Entrance *---",
@@ -17,7 +18,8 @@ def locations():
 	"Cobalt Beck *--",
 	"Cobalt Beck Bridge -*-",
 	"Cobalt Beck --*",
-	"Emelle Village"]
+	"Emelle Village",
+	"Shaded Path"]
 
 	hostileLocations = ["Jaded Forest Path -*--",
 	"Jaded Forest Clearing --*-",
@@ -99,7 +101,7 @@ def effect(givenEffect):
 
 	return givenEffect
 
-def battle():
+def battle(strength):
 	global enemyBaseHealth
 	global health
 	global exp
@@ -139,7 +141,7 @@ def battle():
 		elif battleChoice == "i":
 			os.system("cls")
 			mainScreen()
-			health, timer = itemLib.useItems(playerItems, itemDesc, specialItems, health)
+			health, timer, strength = itemLib.useItems(playerItems, itemDesc, specialItems, health, strength)
 		elif battleChoice == "s":
 			int(enemyBaseHealth)
 			os.system("cls")
@@ -247,12 +249,12 @@ def battle():
 	exp += endNumber
 	input("")
 
-def monsterChance():
+def monsterChance(strength):
 	chance = randint(1,10)
 	if any(locations[position] in s for s in hostileLocations):
 		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
 		if chance < randint(1,10):
-			battle()
+			battle(strength)
 
 def information():
 	os.system("cls")
@@ -275,6 +277,7 @@ def showHelp():
 	cprint(("C: See information about your character."), "blue", "on_white")
 	cprint(("I: View your items."), "blue", "on_white")
 	cprint(("B: Move back one location."), "blue", "on_white")
+	cprint(("F: Save the game."), "blue", "on_white")
 	print("")
 	print("During battle, colours are used to signal whose turn it is.")
 	cprint("White on BLUE signals that it's YOUR turn.", "white", "on_blue")
@@ -304,6 +307,8 @@ def parseCommand(command, position):
 		showHelp()
 	if command == "c":
 		information()
+	if command == "f":
+		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, specialSpells, playerClass, playerItems, itemDesc, specialItems)
 	if command == "":
 		cprint(("You chose to move on...."), "grey", "on_cyan")
 		position += 1
@@ -445,6 +450,17 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 		dialogueLib.say("Alcea", "Oh my! Did you just come from the Jaded Forest?", good)
 		dialogueLib.say("Alcea", "Many have rested here recently due to wounds; it seems that \nwe're losing the forest to the beasts.", good)
 		dialogueLib.say("Alcea", "It's a terrible shame; if we lose the forest to beasts, then \nwe'll lose access to Home Town....", good)
+		dialogueLib.say("Alcea", "If you want to stay here and rest for a while, you're more than welcome to.", good)
+		dialogueLib.say("Alcea", "My father, Zaor, will take you in. He'll even give you a potion\n for half the price of the shops. He was once wounded from fighting, and the\n prices of potions made everything worse - selling them for half price is his way of\ngiving something back.", good)
+		dialogueLib.say("Zaor", "Ah! You must be from Home Town. The forest is getting worse;\njust yesterday I saw hideous beasts clambering in the treetops - why can't we\n just all group together and kill the damn things?", alternate)
+		dialogueLib.say("Zaor", "But still - it seems as though there's hope. If you got through\nthe forest alive, no doubt you're a good fighter....", alternate)
+		dialogueLib.say("Zaor", "You know what? My fighting days are over. Take this:", alternate)
+		playerItems, itemDesc, specialItems = itemLib.addItem("Silver Sword", "A beautifully crafted blade. The name 'Zaor' is etched into the side.", playerItems, itemDesc, specialItems, "attack")
+		dialogueLib.say("Zaor", "I'm sorry about the name in the side, but it'll do you good.\nI've had that sword for 38 years now, and it's never failed my once. Good luck!", alternate)
+		dialogueLib.say("Alcea", "Oh, wait!", good)
+		dialogueLib.say("Alcea", "If you're going to fight more beasts, you'll need potions!", good)
+		dialogueLib.say("Alcea", "I've got some in my bag, but I won't be fighting anything.\nYou need them more than me!", good)
+		playerItems, itemDesc, specialItems = itemLib.addItem("Potion", "A bottle of mysterious red liquid.", playerItems, itemDesc, specialItems, "heal")
 
 		seenDialogues += 1
 
@@ -546,6 +562,7 @@ timer = 0
 import spellLib
 import itemLib
 import dialogueLib
+import saveLib
 
 locations, descriptions, hostileLocations = locations()
 names, stats, enemyDamage = enemies()
@@ -571,17 +588,30 @@ import msvcrt
 # Initializing things #
 
 colorama.init()
-good, bad = dialogueLib.initPresets()
+good, bad, alternate = dialogueLib.initPresets()
 
 ######################## END OF SETUP ###########################
 
 titleScreen()
 input("")
+os.system("cls")
+mainScreen()
+cprint("Load a save file?", "white", "on_red")
+cprint("Enter 'y' for yes, or 'n' for no: ", "white", "on_red")
+saveChoice = input("?: ")
+saveChoice.lower()
+if saveChoice == "y":
+	saveLib.load()
+	print(playerItems)
+else:
+	cprint("Save file not opened.", "white", "on_red")
+input("")
+os.system("cls")
 
 while leave!=True:
 	mainScreen()
 	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
-	monsterChance()
+	monsterChance(strength)
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
 	position = parseCommand(command, position)

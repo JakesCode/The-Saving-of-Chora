@@ -49,7 +49,7 @@ def useSpell(playerSpells):
 		print("")
 	cprint("Please enter the number of the spell you wish to cast: ", "magenta", "on_white")
 	spellChoice = input("?: ")
-	if spellChoice == "":
+	if spellChoice == False:
 		print("Nothing was entered! Using default spell, Blink, instead.")
 		spellChoice = "Blink"
 		playerDamageToEnemy = 4

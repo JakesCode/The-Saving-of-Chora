@@ -9,11 +9,13 @@ colorama.init()
 
 def initPresets():
 
-	good = {"white": "on_cyan"}
+	good = {"grey": "on_cyan"}
 
 	bad = {"grey": "on_red"}
 
-	return good, bad
+	alternate = {"white": "on_blue"}
+
+	return good, bad, alternate
 
 def say(name, line, preset):
 	initPresets()
