@@ -558,9 +558,6 @@ colorama.init()
 
 ######################## END OF SETUP ###########################
 
-playerItems, itemDesc, specialItems= itemLib.addItem("Potion", "A bottle of mysterious red liquid.", playerItems, itemDesc, specialItems, "heal")
-playerItems, itemDesc, specialItems = itemLib.addItem("Pendant", "A piece of jewellery, covered in small gems.", playerItems, itemDesc, specialItems, None)
-
 titleScreen()
 input("")
 
