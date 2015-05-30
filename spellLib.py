@@ -38,7 +38,7 @@ def addSpell(toBeAdded, playerSpells):
 	cprint(("(" + spellDict[toBeAdded] + ")"), "white", "on_red")
 	input("")
 
-def useSpell(playerSpells):
+def useSpell(playerSpells, mana):
 	cprint((("----"*8) + "USE A SPELL" + ("----"*8)), "magenta", "on_white")
 	print("")
 	for x in range(0,len(playerSpells)):
@@ -46,6 +46,7 @@ def useSpell(playerSpells):
 		int(x)
 		cprint(("  (" + spellDict[playerSpells[x]] + ")"), "white", "on_blue")
 		cprint("  Deals " + str(damage[playerSpells[x]]) + " damage", "white", "on_blue")
+		cprint("  Costs " + str(damage[playerSpells[x]]) + " mana", "white", "on_blue")
 		print("")
 	cprint("Please enter the number of the spell you wish to cast: ", "magenta", "on_white")
 	spellChoice = input("?: ")
@@ -55,14 +56,21 @@ def useSpell(playerSpells):
 		playerDamageToEnemy = 4
 
 	elif int(spellChoice) < int(len(playerSpells)):
-		if not(any(playerSpells[int(spellChoice)] in n for n in specialSpellsKeys)):
+		if not(any(playerSpells[int(spellChoice)] in n for n in specialSpellsKeys)) and int(mana) > damage[playerSpells[int(spellChoice)]]:
 			cprint(("You cast a " + playerSpells[int(spellChoice)] + " spell!"), "white", "on_magenta")
 			cprint(("Dealt " + str(damage[playerSpells[int(spellChoice)]]) + " damage!"), "white", "on_magenta")
+			cprint(("Used " + str(damage[playerSpells[int(spellChoice)]]) + " mana."), "white", "on_magenta")
 			playerDamageToEnemy = int(damage[playerSpells[int(spellChoice)]])
+			mana -= int(damage[playerSpells[int(spellChoice)]])
 			int(playerDamageToEnemy)
 
 			# Since it's not in the special list of spells, no effect will be applied to the enemy. #
 			sendEffect = "nothing"
+		elif mana < damage[playerSpells[int(spellChoice)]]:
+			cprint(("Not enough mana!"), "white", "on_magenta")
+
+			sendEffect = "nothing"
+			playerDamageToEnemy = 0
 		else:
 			effect = specialSpells[playerSpells[int(spellChoice)]]
 			if effect == "paralyze":
@@ -82,4 +90,4 @@ def useSpell(playerSpells):
 		os.system("cls")
 		useSpell(playerSpells)
 
-	return playerDamageToEnemy, sendEffect
+	return playerDamageToEnemy, sendEffect, mana

@@ -7,7 +7,7 @@ import sys
 import os
 colorama.init()
 
-def useItems(playerItems, itemDesc, specialItems, health, strength):
+def useItems(playerItems, itemDesc, specialItems, health, strength, mana):
 	keys = list(specialItems.keys())
 
 	for x in range(0,len(playerItems)):
@@ -21,6 +21,8 @@ def useItems(playerItems, itemDesc, specialItems, health, strength):
 				cprint(("Heals the player by 20 points."), "grey", "on_cyan")
 			elif specialItems[playerItems[x]] == "attack":
 				cprint(("Raises the strength of the player by 4."), "grey", "on_cyan")
+			elif specialItems[playerItems[x]] == "mana":
+				cprint(("Gives the player 10 mana."), "grey", "on_cyan")
 		print("")
 	if len(playerItems) == 0:
 		cprint("No items to show!", "blue", "on_white")
@@ -38,10 +40,15 @@ def useItems(playerItems, itemDesc, specialItems, health, strength):
 				elif specialItems[str(playerItems[int(itemChoice)])] == "attack":
 					strength += 4
 					cprint(("Strength increased by 4."), "magenta", "on_white")
+				elif specialItems[str(playerItems[int(itemChoice)])] == "mana":
+					mana += 10
+					cprint(("Gained 10 mana."), "magenta", "on_white")
+					del specialItems[str(playerItems[int(itemChoice)])]
+					del playerItems[int(itemChoice)]
 			else:
 				cprint(("You can't use that!"), "magenta", "on_white")
 
-	return health, timer, strength
+	return health, timer, strength, mana
 
 
 def viewItems(playerItems, itemDesc):

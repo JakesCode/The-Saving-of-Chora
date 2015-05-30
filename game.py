@@ -28,13 +28,12 @@ def initLocations():
 
 
 def enemies(position):
-	if int(position) < 5:
-		names = ["Cinderman", "Thornfoot"]
-		stats = {"Cinderman": 10,
-		"Thornfoot": 15}
-		enemyDamage = {"Cinderman": 2,
-		"Thornfoot": 2}
-	elif int(position) > 5 and position < 10:
+	names = ["Cinderman", "Thornfoot"]
+	stats = {"Cinderman": 10,
+	"Thornfoot": 15}
+	enemyDamage = {"Cinderman": 2,
+	"Thornfoot": 2}
+	if int(position) > 5 and position < 10:
 		names = ["Cinderman", "Thornfoot", "Boulderchild", "Vextooth"]
 		stats = {"Cinderman": 10,
 		"Thornfoot": 15,
@@ -101,7 +100,7 @@ def effect(givenEffect):
 
 	return givenEffect
 
-def battle(strength):
+def battle(strength, mana):
 	global enemyBaseHealth
 	global health
 	global exp
@@ -125,7 +124,9 @@ def battle(strength):
 
 		cprint((enemyName + " Health: " + str(enemyBaseHealth)), "white", "on_red")
 		cprint(("Health: " + str(health)), "white", "on_blue")
+		cprint(("Mana: " + str(mana)), "white", "on_blue")
 		int(health)
+		int(mana)
 		int(enemyBaseHealth)
 		print("")
 		cprint("S - Use a Spell", "white", "on_blue")
@@ -141,12 +142,12 @@ def battle(strength):
 		elif battleChoice == "i":
 			os.system("cls")
 			mainScreen(hostileLocations)
-			health, timer, strength = itemLib.useItems(playerItems, itemDesc, specialItems, health, strength)
+			health, timer, strength, mana = itemLib.useItems(playerItems, itemDesc, specialItems, health, strength, mana)
 		elif battleChoice == "s":
 			int(enemyBaseHealth)
 			os.system("cls")
 			mainScreen(hostileLocations)
-			playerDamageToEnemy, sendEffect = spellLib.useSpell(playerSpells)
+			playerDamageToEnemy, sendEffect, mana = spellLib.useSpell(playerSpells, mana)
 			int(enemyBaseHealth)
 			int(playerDamageToEnemy)
 			enemyBaseHealth -= playerDamageToEnemy
@@ -249,12 +250,12 @@ def battle(strength):
 	exp += endNumber
 	input("")
 
-def monsterChance(strength):
+def monsterChance(strength, mana):
 	chance = randint(1,20)
 	if any(locations[int(position)] in s for s in hostileLocations):
 		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
 		if chance < 5:
-			battle(strength)
+			battle(strength, mana)
 
 def information():
 	os.system("cls")
@@ -308,7 +309,7 @@ def parseCommand(command, position):
 	if command == "c":
 		information()
 	if command == "f":
-		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems)
+		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana)
 	if command == "":
 		cprint(("You chose to move on...."), "grey", "on_cyan")
 		position += 1
@@ -404,6 +405,7 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 		dialogueLib.say("Alcea", "If you're going to fight more beasts, you'll need potions!", good)
 		dialogueLib.say("Alcea", "I've got some in my bag, but I won't be fighting anything.\nYou need them more than me!", good)
 		playerItems, itemDesc, specialItems = itemLib.addItem("Potion", "A bottle of mysterious red liquid.", playerItems, itemDesc, specialItems, "heal")
+		playerItems, itemDesc, specialItems = itemLib.addItem("Mana Potion", "A bottle of swirling blue liquid.", playerItems, itemDesc, specialItems, "mana")
 
 		seenDialogues += 1
 
@@ -531,15 +533,16 @@ def init():
 	playerSpells = []
 	playerClass = ""
 	seenDialogues = 0
+	mana = 0
 	# rank (given by the beginning bit)
 
 	locations, descriptions, hostileLocations = initLocations()
 	names, stats, enemyDamage = enemies(position)
-	spells, damage, specialSpells, specialSpellsKeys = spellLib.spells()
+	spellDict, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells = spellLib.spells()
 	itemDesc, playerItems, specialItems = itemLib.itemInit()
 
 
-	return position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems
+	return position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana
 
 # def addLevel(amount):
 # 	# Making things easier for the 'checkExpLevel' function. #
@@ -604,6 +607,8 @@ good, bad, alternate = dialogueLib.initPresets()
 
 ######################## END OF SETUP ###########################
 
+os.system("title The Saving of Chora")
+
 titleScreen()
 input("")
 os.system("cls")
@@ -615,7 +620,7 @@ saveChoice.lower()
 if saveChoice == "y":
 	global hostileLocations
 
-	position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems = saveLib.load()
+	position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana = saveLib.load()
 	locations, descriptions, hostileLocations = initLocations()
 	names, stats, enemyDamage = enemies(position)
 	spells, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells = spellLib.spells()
@@ -626,6 +631,8 @@ if saveChoice == "y":
 	int(health)
 	cprint(("Strength: " + str(strength)), "white", "on_magenta")
 	int(strength)
+	cprint(("Mana: " + str(mana)), "white", "on_magenta")
+	int(mana)
 	cprint(("EXP: " + str(exp)), "white", "on_magenta")
 	int(exp)
 	print("")
@@ -654,11 +661,11 @@ if saveChoice == "y":
 
 elif saveChoice == "n":
 	cprint("Save file not opened.", "white", "on_red")
-	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems = init()
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana = init()
 	health, strength, rank, seenDialogues = intro(seenDialogues)
 elif saveChoice == "r":
 	saveLib.newGame()
-	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems = init()
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana = init()
 	health, strength, rank, seenDialogues = intro(seenDialogues)
 	cprint("Save file has been wiped.", "white", "on_red")
 else:
@@ -673,7 +680,7 @@ while 1<2:
 	locations, descriptions, hostileLocations = initLocations()
 	mainScreen(hostileLocations)
 	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
-	monsterChance(strength)
+	monsterChance(strength, mana)
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
 	position = parseCommand(command, position)

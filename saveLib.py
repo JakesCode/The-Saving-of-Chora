@@ -13,9 +13,9 @@ def newGame():
 	newFile.write("")
 
 
-def save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems):
+def save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana):
 	playerClass = None
-	toSave = [position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems]
+	toSave = [position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana]
 	with open("saveGame.dat", "w") as saveFile:
 		for x in range(0,len(toSave)):
 			saveFile.write(str(toSave[x]) + "\n")
@@ -47,4 +47,7 @@ def load():
 		specialItemsString = importedData[11]
 		specialItems = ast.literal_eval(specialItemsString)
 
-	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems
+		manaString = importedData[12]
+		mana = ast.literal_eval(manaString)
+
+	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana
