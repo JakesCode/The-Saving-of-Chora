@@ -30,7 +30,7 @@ def spells():
 
 	specialSpellsKeys = specialSpells.keys()
 
-	return spellDict, damage, specialSpells, specialSpellsKeys
+	return spellDict, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells
 
 def addSpell(toBeAdded, playerSpells):
 	playerSpells.append(toBeAdded)

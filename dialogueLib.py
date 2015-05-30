@@ -24,6 +24,6 @@ def say(name, line, preset):
 	print("")
 	print(line)
 	print("")
-	cprint(("****"*18), presetKeys[0], preset[presetKeys[0]])
+	cprint((("****"*18) + "****"), presetKeys[0], preset[presetKeys[0]])
 	input("")
 	print("")

@@ -1,4 +1,4 @@
-def locations():
+def initLocations():
 	descriptions = {"Home Town": "A peaceful town",
 	"Jaded Forest Entrance *---": "An opening in the thick wall of tall flowers and robust logs.",
 	"Jaded Forest Path -*--": "A pristine woodland, decorated with intricate flowers.",
@@ -27,14 +27,14 @@ def locations():
 	return locations, descriptions, hostileLocations
 
 
-def enemies():
-	if position < 5:
+def enemies(position):
+	if int(position) < 5:
 		names = ["Cinderman", "Thornfoot"]
 		stats = {"Cinderman": 10,
 		"Thornfoot": 15}
 		enemyDamage = {"Cinderman": 2,
 		"Thornfoot": 2}
-	elif position > 5 and position < 10:
+	elif int(position) > 5 and position < 10:
 		names = ["Cinderman", "Thornfoot", "Boulderchild", "Vextooth"]
 		stats = {"Cinderman": 10,
 		"Thornfoot": 15,
@@ -48,13 +48,13 @@ def enemies():
 	return names, stats, enemyDamage
 
 
-def mainScreen():
-	if any(locations[position] in s for s in hostileLocations):
-		cprint(locations[position].center(80), "white", "on_red")
-		cprint(descriptions[locations[position]].center(80), "white", "on_red")
+def mainScreen(hostileLocations):
+	if any(locations[int(position)] in s for s in hostileLocations):
+		cprint(locations[int(position)].center(80), "white", "on_red")
+		cprint(descriptions[locations[int(position)]].center(80), "white", "on_red")
 	else:
-		cprint(locations[position].center(80), "white", "on_cyan")
-		cprint(descriptions[locations[position]].center(80), "white", "on_cyan")
+		cprint(locations[int(position)].center(80), "white", "on_cyan")
+		cprint(descriptions[locations[int(position)]].center(80), "white", "on_cyan")
 	print("")
 
 def death():
@@ -111,7 +111,7 @@ def battle(strength):
 	enemyChoice = (randint(1,len(names))-1)
 	print("")
 	os.system("cls")
-	mainScreen()
+	mainScreen(hostileLocations)
 	cprint((names[enemyChoice] + " appeared!"), "white", "on_red")
 	cprint(("Enemy has " + str(stats[names[enemyChoice]]) + " health!"), "white", "on_red")
 	print("")
@@ -120,7 +120,7 @@ def battle(strength):
 	enemyName = names[enemyChoice]
 
 	while enemyBaseHealth > 0:
-		if health<=0:
+		if int(health)<=0:
 			death()
 
 		cprint((enemyName + " Health: " + str(enemyBaseHealth)), "white", "on_red")
@@ -140,12 +140,12 @@ def battle(strength):
 			timer = 0
 		elif battleChoice == "i":
 			os.system("cls")
-			mainScreen()
+			mainScreen(hostileLocations)
 			health, timer, strength = itemLib.useItems(playerItems, itemDesc, specialItems, health, strength)
 		elif battleChoice == "s":
 			int(enemyBaseHealth)
 			os.system("cls")
-			mainScreen()
+			mainScreen(hostileLocations)
 			playerDamageToEnemy, sendEffect = spellLib.useSpell(playerSpells)
 			int(enemyBaseHealth)
 			int(playerDamageToEnemy)
@@ -165,7 +165,7 @@ def battle(strength):
 
 		input("")
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 
 		# Enemy Turn #
 
@@ -198,7 +198,7 @@ def battle(strength):
 					int(health)
 				input("")
 				os.system("cls")
-				mainScreen()
+				mainScreen(hostileLocations)
 			elif enemyBaseHealth <= 0:
 				cprint("The " + enemyName + " dropped to the floor!", "white", "on_red")
 				input("")
@@ -220,7 +220,7 @@ def battle(strength):
 
 	# BATTLE END #
 	os.system("cls")
-	mainScreen()
+	mainScreen(hostileLocations)
 	endNumber = strength*health
 	startNumber = 0
 	cprint((enemyName + " defeated!"), "white", "on_magenta")
@@ -232,7 +232,7 @@ def battle(strength):
 	time.sleep(2)
 	while startNumber != endNumber:
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 		startNumber+=1
 		cprint((enemyName + " defeated!"), "white", "on_magenta")
 		cprint(("Strength: " + str(strength)), "white", "on_magenta")
@@ -243,22 +243,22 @@ def battle(strength):
 		time.sleep(0.05)
 	time.sleep(1)
 	os.system("cls")
-	mainScreen()
+	mainScreen(hostileLocations)
 	cprint(("EXP Gained: " + str(endNumber)), "white", "on_magenta")
 	int(endNumber)
 	exp += endNumber
 	input("")
 
 def monsterChance(strength):
-	chance = randint(1,10)
-	if any(locations[position] in s for s in hostileLocations):
+	chance = randint(1,20)
+	if any(locations[int(position)] in s for s in hostileLocations):
 		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
-		if chance < randint(1,10):
+		if chance < 5:
 			battle(strength)
 
 def information():
 	os.system("cls")
-	mainScreen()
+	mainScreen(hostileLocations)
 	print("")
 	print("Health: " + str(health))
 	print("Locaton: " + locations[position])
@@ -270,7 +270,7 @@ def information():
 
 def showHelp():
 	os.system("cls")
-	mainScreen()
+	mainScreen(hostileLocations)
 	cprint("Commands: ", "red", "on_white")
 	print("")
 	cprint(("S: See current spells."), "blue", "on_white")
@@ -293,7 +293,7 @@ def basicPunch(enemyBaseHealth, strength):
 	print("")
 	cprint(("Dealt " + str(strength) + " damage!"), "grey", "on_green")
 	int(strength)
-	enemyBaseHealth-=strength
+	enemyBaseHealth-=int(strength)
 	return enemyBaseHealth
 
 def parseCommand(command, position):
@@ -308,7 +308,7 @@ def parseCommand(command, position):
 	if command == "c":
 		information()
 	if command == "f":
-		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, specialSpells, playerClass, playerItems, itemDesc, specialItems)
+		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems)
 	if command == "":
 		cprint(("You chose to move on...."), "grey", "on_cyan")
 		position += 1
@@ -321,7 +321,7 @@ def parseCommand(command, position):
 
 	if command == "i":
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 		itemLib.viewItems(playerItems, itemDesc)
 
 	## CLASS STUFF ##
@@ -347,66 +347,9 @@ def parseCommand(command, position):
 	return position
 
 def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
-	if position == 0 and seenDialogues == 0:
-		os.system("cls")
-		mainScreen()
-		print("Adventurer!")
-		print("How is it that you're already old enough to go off into the world?")
-		print("")
-		print("It does not seem two minutes since your father met me....")
-		print("He was a very brave individual - and clearly, so are you.")
-		print("")
-		print("Welcome to the world of Chora!")
-		print("The world you live in is very powerful - the earth itself breathes life,")
-		print("the creatures themselves hold mystical forces within their strength,")
-		print("and the very essence of the world is controlled by ranks of humans!")
-		print("")
-		cprint("Press the Enter key to continue....", "blue", "on_white")
-		input("")
-
-		os.system("cls")
-		mainScreen()
-		print("Now.... what rank would you like to be?")
-		print("")
-		print("FRAJAN            |           TEZAD            |            OSLID")
-		print("")
-		print("Fearless warriors.     Use magic for leisure.     Hunters with great strength.")
-		print("")
-		classChoice = input("Please enter either A, B or C.... ")
-		classChoice.lower()
-
-		if classChoice=="a" or classChoice=="b" or classChoice=="c":
-			if classChoice=="a":
-				classChoice = "frajan"
-			if classChoice=="b":
-				classChoice = "tezad"
-			if classChoice=="c":
-				classChoice = "oslid"
-			parseCommand(classChoice, position)
-		else:
-			print("Please enter something valid....")
-			input("")
-			os.system("cls")
-			seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
-
-		print("Ah! So you've joined the rank of " + rank + "!")
-		print("That means you'll be starting with " + str(health) + " health.")
-		int(health)
-
-		print("")
-		print("Very well then! If you're stuck at any time, type 'help'.")
-		print("I wish you luck! Come back and see us sometime....")
-		print("")
-		cprint("Press the Enter key to continue....", "blue", "on_white")
-		input("")
-		os.system("cls")
-		mainScreen()
-
-		seenDialogues += 1
-
 	if position == 1 and seenDialogues == 1:
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 		print("You need to be careful! Dangerous monsters roam these lands....")
 		print("")
 		print("Some areas are under control - but others are ruled by evil beasts.")
@@ -428,13 +371,13 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 		cprint("Press the Enter key to continue....", "blue", "on_white")
 		input("")
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 
 		seenDialogues += 1
 
 	if position == 5 and seenDialogues == 2:
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 		print("What's this?")
 		print("")
 		print("There appears to be a small pendant on the ground.")
@@ -446,12 +389,12 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 
 	if position == 8 and seenDialogues == 3:
 		os.system("cls")
-		mainScreen()
+		mainScreen(hostileLocations)
 		dialogueLib.say("Alcea", "Oh my! Did you just come from the Jaded Forest?", good)
 		dialogueLib.say("Alcea", "Many have rested here recently due to wounds; it seems that \nwe're losing the forest to the beasts.", good)
 		dialogueLib.say("Alcea", "It's a terrible shame; if we lose the forest to beasts, then \nwe'll lose access to Home Town....", good)
 		dialogueLib.say("Alcea", "If you want to stay here and rest for a while, you're more than welcome to.", good)
-		dialogueLib.say("Alcea", "My father, Zaor, will take you in. He'll even give you a potion\n for half the price of the shops. He was once wounded from fighting, and the\n prices of potions made everything worse - selling them for half price is his way of\ngiving something back.", good)
+		dialogueLib.say("Alcea", "My father, Zaor, will take you in. He'll even give you a potion\nfor half the price of the shops. He was once wounded from fighting, and the\nprices of potions made everything worse - selling them for half price is his\nway of giving something back.", good)
 		dialogueLib.say("Zaor", "Ah! You must be from Home Town. The forest is getting worse;\njust yesterday I saw hideous beasts clambering in the treetops - why can't we\n just all group together and kill the damn things?", alternate)
 		dialogueLib.say("Zaor", "But still - it seems as though there's hope. If you got through\nthe forest alive, no doubt you're a good fighter....", alternate)
 		dialogueLib.say("Zaor", "You know what? My fighting days are over. Take this:", alternate)
@@ -512,6 +455,92 @@ def titleScreen():
 	while msvcrt.kbhit():
 		msvcrt.getch()
 
+def intro(seenDialogues):
+	os.system("cls")
+	mainScreen(hostileLocations)
+	print("Adventurer!")
+	print("How is it that you're already old enough to go off into the world?")
+	print("")
+	print("It does not seem two minutes since your father met me....")
+	print("He was a very brave individual - and clearly, so are you.")
+	print("")
+	print("Welcome to the world of Chora!")
+	print("The world you live in is very powerful - the earth itself breathes life,")
+	print("the creatures themselves hold mystical forces within their strength,")
+	print("and the very essence of the world is controlled by ranks of humans!")
+	print("")
+	cprint("Press the Enter key to continue....", "blue", "on_white")
+	input("")
+
+	os.system("cls")
+	mainScreen(hostileLocations)
+	print("Now.... what rank would you like to be?")
+	print("")
+	print("FRAJAN            |           TEZAD            |            OSLID")
+	print("")
+	print("Fearless warriors.     Use magic for leisure.     Hunters with great strength.")
+	print("")
+	classChoice = input("Please enter either A, B or C.... ")
+	classChoice.lower()
+
+	if classChoice=="a" or classChoice=="b" or classChoice=="c":
+		if classChoice=="a":
+			health = 24
+			spellLib.addSpell("Blink", playerSpells)
+			strength = 4
+			rank = "Frajan"
+		if classChoice=="b":
+			health = 22
+			spellLib.addSpell("Blink", playerSpells)
+			strength = 3
+			rank = "Tezad"
+		if classChoice=="c":
+			health = 19
+			spellLib.addSpell("Blink", playerSpells)
+			spellLib.addSpell("Swipe", playerSpells)
+			strength = 2
+			rank = "Oslid"
+	else:
+		print("Please enter something valid....")
+		input("")
+		os.system("cls")
+		seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
+
+	print("Ah! So you've joined the rank of " + rank + "!")
+	print("That means you'll be starting with " + str(health) + " health.")
+	int(health)
+
+	print("")
+	print("Very well then! If you're stuck at any time, type 'help'.")
+	print("I wish you luck! Come back and see us sometime....")
+	print("")
+	cprint("Press the Enter key to continue....", "blue", "on_white")
+	input("")
+	os.system("cls")
+	mainScreen(hostileLocations)
+	seenDialogues += 1
+
+	return health, strength, rank, seenDialogues
+
+def init():
+	position = 0
+	# health (given by the beginning bit)
+	# strength (given by the beginning bit)
+	exp = 0
+	playerLevel = 1
+	playerSpells = []
+	playerClass = ""
+	seenDialogues = 0
+	# rank (given by the beginning bit)
+
+	locations, descriptions, hostileLocations = initLocations()
+	names, stats, enemyDamage = enemies(position)
+	spells, damage, specialSpells, specialSpellsKeys = spellLib.spells()
+	itemDesc, playerItems, specialItems = itemLib.itemInit()
+
+
+	return position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems
+
 # def addLevel(amount):
 # 	# Making things easier for the 'checkExpLevel' function. #
 # 	global playerLevel
@@ -522,7 +551,7 @@ def titleScreen():
 # 	int(playerLevel)
 # 	input("")
 # 	os.system("cls")
-# 	mainScreen()
+# 	mainScreen(hostileLocations)
 
 # def checkExpLevel(playerLevel):
 # 	# Checks the level of EXP. If it's high enough, the player goes up a level. #
@@ -537,19 +566,11 @@ def titleScreen():
 
 ######################## END OF FUNCTIONS ###########################
 
-global leave
 global playerSpells
 global playerItems
 global timer
 global seenDialogues
 global specialItems
-
-position = 0
-playerLevel = 1
-playerClass = ""
-exp = 0
-leave = False
-seenDialogues = 0
 
 # Battle Related #
 
@@ -564,16 +585,6 @@ import itemLib
 import dialogueLib
 import saveLib
 
-locations, descriptions, hostileLocations = locations()
-names, stats, enemyDamage = enemies()
-spells, damage, specialSpells, specialSpellsKeys = spellLib.spells()
-itemDesc, playerItems, specialItems = itemLib.itemInit()
-
-
-playerSpells = []
-specialItems = {}
-
-
 # Other Libraries #
 
 from random import randint
@@ -584,6 +595,7 @@ from termcolor import *
 import colorama
 import sys
 import msvcrt
+import ast
 
 # Initializing things #
 
@@ -595,21 +607,71 @@ good, bad, alternate = dialogueLib.initPresets()
 titleScreen()
 input("")
 os.system("cls")
-mainScreen()
+
 cprint("Load a save file?", "white", "on_red")
-cprint("Enter 'y' for yes, or 'n' for no: ", "white", "on_red")
+cprint("Enter 'y' for yes, 'n' for no, or 'r' to make a new file: ", "white", "on_red")
 saveChoice = input("?: ")
 saveChoice.lower()
 if saveChoice == "y":
-	saveLib.load()
-	print(playerItems)
-else:
+	global hostileLocations
+
+	position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems = saveLib.load()
+	locations, descriptions, hostileLocations = initLocations()
+	names, stats, enemyDamage = enemies(position)
+	spells, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells = spellLib.spells()
+	cprint("Save file loaded successfully.", "white", "on_blue")
+
+	print("")
+	cprint(("Health: " + str(health)), "white", "on_magenta")
+	int(health)
+	cprint(("Strength: " + str(strength)), "white", "on_magenta")
+	int(strength)
+	cprint(("EXP: " + str(exp)), "white", "on_magenta")
+	int(exp)
+	print("")
+	cprint(("Location: " + locations[position]), "white", "on_magenta")
+	cprint("Location description: ", "grey", "on_cyan")
+	cprint("    " + descriptions[locations[position]], "grey", "on_cyan")
+	if any(locations[int(position)] in s for s in hostileLocations):
+		cprint("(Location is hostile.... watch your step!)", "white", "on_red")
+	print("")
+	cprint(("Items: "), "white", "on_magenta")
+	for x in range(0,len(playerItems)):
+		cprint(("  " + str(x) + ": " + playerItems[x]), "blue", "on_white")
+		int(x)
+		cprint(("    " + itemDesc[playerItems[x]]), "blue", "on_white")
+	print("")
+	cprint(("Spells: "), "white", "on_magenta")
+	for x in range(0,len(playerSpells)):
+		cprint("  " + str(x) + ": " + playerSpells[x], "white", "on_blue")
+		int(x)
+		cprint(("  (" + spellDict[playerSpells[x]] + ")"), "white", "on_blue")
+		cprint("  Deals " + str(damage[playerSpells[x]]) + " damage", "white", "on_blue")
+		
+	print("")
+	cprint("Press the enter key to return to your game....", "grey", "on_yellow")
+	input("")
+
+elif saveChoice == "n":
 	cprint("Save file not opened.", "white", "on_red")
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems = init()
+	health, strength, rank, seenDialogues = intro(seenDialogues)
+elif saveChoice == "r":
+	saveLib.newGame()
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, spells, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems = init()
+	health, strength, rank, seenDialogues = intro(seenDialogues)
+	cprint("Save file has been wiped.", "white", "on_red")
+else:
+	print("Nothing valid entered.")
+
+
+
 input("")
 os.system("cls")
 
-while leave!=True:
-	mainScreen()
+while 1<2:
+	locations, descriptions, hostileLocations = initLocations()
+	mainScreen(hostileLocations)
 	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
 	monsterChance(strength)
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")

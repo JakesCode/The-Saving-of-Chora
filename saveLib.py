@@ -5,26 +5,46 @@ from termcolor import *
 import colorama
 import sys
 import os
+import ast
 colorama.init()
 
+def newGame():
+	newFile = open("saveGame.dat", "w")
+	newFile.write("")
 
-def save(position, health, strength, exp, playerLevel, playerSpells, specialSpells, playerClass, playerItems, itemDesc, specialItems):
-	toSave = [position, health, strength, exp, playerLevel, playerSpells, specialSpells, playerClass, playerItems, itemDesc, specialItems]
-	with open("saveGame.dat", "a") as saveFile:
+
+def save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems):
+	playerClass = None
+	toSave = [position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems]
+	with open("saveGame.dat", "w") as saveFile:
 		for x in range(0,len(toSave)):
 			saveFile.write(str(toSave[x]) + "\n")
 
 def load():
 	importedData = open("saveGame.dat", "r+").readlines()
 	for x in range(0,len(importedData)):
-		position = importedData[0]
-		health = importedData[1]
-		strength = importedData[2]
-		exp = importedData[3]
-		playerLevel = importedData[4]
-		playerSpells = importedData[5]
-		specialSpells = importedData[6]
-		playerClass = importedData[7]
-		playerItems = importedData[8]
-		itemDesc = importedData[9]
-		specialItems = importedData[10]
+		position = ast.literal_eval(importedData[0])
+		health = ast.literal_eval(importedData[1])
+		strength = ast.literal_eval(importedData[2])
+		exp = ast.literal_eval(importedData[3])
+		playerLevel = ast.literal_eval(importedData[4])
+
+		playerSpellsString = importedData[5]
+		playerSpells = ast.literal_eval(playerSpellsString)
+
+		# playerClass = ast.literal_eval(importedData[6])
+		playerClass = None
+
+		seenDialogues = ast.literal_eval(importedData[7])
+		rank = importedData[8]
+
+		playerItemsString = importedData[9]
+		playerItems = ast.literal_eval(playerItemsString)
+
+		itemDescString = importedData[10]
+		itemDesc = ast.literal_eval(itemDescString)
+
+		specialItemsString = importedData[11]
+		specialItems = ast.literal_eval(specialItemsString)
+
+	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems
