@@ -16,12 +16,12 @@ This <b>README</b> will guide you through the process of installing and playing 
 * Once that is done, simply run the <b>setup.bat</b> file.
 
 <b>If that doesn't work</b>, then:
-	* Open a cmd prompt.
-	* Use the command <b>cd</b> to navigate to the C:\Python34\The-Saving-of-Chora-master\Install directory (or wherever else you've installed the game).
-	* Navigate to each folder:
-		* Once in each one (you'll know you're in the right one if the cmd prompt says <C:\Python34\The-Saving-of-Chora-master\Install\<b>blah blah</b>) (once again, or wherever you've installed the game.)
-		* Use the command `python setup.py install`. The cmd prompt will install a bunch of stuff. When it stops and returns to the command line again, navigate back one folder, into the next one, and then do the same thing.
-	* Once all the packages have been installed, you're ready to start the game. Enjoy!
+* Open a cmd prompt.
+* Use the command <b>cd</b> to navigate to the C:\Python34\The-Saving-of-Chora-master\Install directory (or wherever else you've installed the game).
+* Navigate to each folder:
+	* Once in each one (you'll know you're in the right one if the cmd prompt says <C:\Python34\The-Saving-of-Chora-master\Install\<b>blah blah</b>) (once again, or wherever you've installed the game.)
+	* Use the command `python setup.py install`. The cmd prompt will install a bunch of stuff. When it stops and returns to the command line again, navigate back one folder, into the next one, and then do the same thing.
+* Once all the packages have been installed, you're ready to start the game. Enjoy!
 
 <hr>
 <h1><b>**</b> GAMEPLAY <b>**</b></h1>
