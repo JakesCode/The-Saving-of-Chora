@@ -322,6 +322,8 @@ def showHelp():
 	cprint(("B: Move back one location."), "blue", "on_white")
 	cprint(("F: Save the game."), "blue", "on_white")
 	cprint(("Q: View your quests."), "blue", "on_white")
+	cprint(("E: Exit the game."), "blue", "on_white")
+	cprint(("	This does not save your game. Use 'F' to save the current game."), "red", "on_white")
 	print("")
 	print("During battle, colours are used to signal whose turn it is.")
 	cprint("White on BLUE signals that it's YOUR turn.", "white", "on_blue")
@@ -340,7 +342,7 @@ def basicPunch(enemyBaseHealth, strength):
 	enemyBaseHealth-=int(strength)
 	return enemyBaseHealth
 
-def parseCommand(command, position):
+def parseCommand(command, position, playerItems):
 	global health
 	global rank
 	global strength
@@ -364,6 +366,8 @@ def parseCommand(command, position):
 			position -= 1
 	if command == "q":
 		questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
+	if command == "e":
+		sys.exit()
 
 	if command == "i":
 		os.system("cls")
@@ -688,18 +692,23 @@ if saveChoice == "y":
 		cprint(("  " + str(x) + ": " + playerItems[x]), "blue", "on_white")
 		int(x)
 		cprint(("    " + itemDesc[playerItems[x]]), "blue", "on_white")
-	print("")
+	if len(playerItems) == 0:
+		cprint(("    No items to show!"), "blue", "on_white")
+	input("")
+	os.system("cls")
 	cprint(("Spells: "), "white", "on_magenta")
 	for x in range(0,len(playerSpells)):
 		cprint("  " + str(x) + ": " + playerSpells[x], "white", "on_blue")
 		int(x)
 		cprint(("  (" + spellDict[playerSpells[x]] + ")"), "white", "on_blue")
 		cprint("  Deals " + str(damage[playerSpells[x]]) + " damage", "white", "on_blue")
+	print("")
+	cprint(("Quests: "), "white", "on_magenta")
+	print("")
 	questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 		
 	print("")
 	cprint("Press the enter key to return to your game....", "grey", "on_yellow")
-	input("")
 
 elif saveChoice == "n":
 	cprint("Save file not opened.", "white", "on_red")
@@ -730,7 +739,7 @@ while 1<2:
 	monsterChance(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position)
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
-	position = parseCommand(command, position)
+	position = parseCommand(command, position, playerItems)
 
 	input("")
 

@@ -102,7 +102,7 @@ def events(eventID, playerItems, itemDesc, seenDialogues, specialItems, ongoingQ
 		dialogueLib.say("Zaor", "She will be up all night now! If she begins brewing something, she\nwon't give up until it's perfect for her!", alternate)
 		dialogueLib.say("Zaor", "Do stay the night. I'm sure it will heal any wounds you may have.", alternate)
 		health += 50
-		dialogueLib.say("In the morning....", "", bad)
+		dialogueLib.say("In the morning", "", bad)
 		dialogueLib.say("Zaor", "I hope you rested well!", good)
 		dialogueLib.say("Alcea", "We've asked too much of you. Have a gift, from all of us....", good)
 		playerItems, itemDesc, specialItems = itemLib.addItem("Red Sigil", "A piece of fabric with a red symbol on it.", playerItems, itemDesc, specialItems, None)
@@ -154,21 +154,21 @@ def addQuest(questName, questDescription, requirements, rewards, event, ongoingQ
 
 def viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements):
 	for x in range(0,len(ongoingQuests)):
-		print(str(x) + ": " + ongoingQuests[x])
-		print("  " + ongoingQuestsDescription[ongoingQuests[x]])
-		print("    Requirements:")
+		cprint((str(x) + ": " + ongoingQuests[x]), "grey", "on_white")
+		cprint(("  " + ongoingQuestsDescription[ongoingQuests[x]]), "grey", "on_white")
+		cprint(("    Requirements:"), "grey", "on_white")
 		for z in range(0,len(ongoingQuestsRequirements[ongoingQuests[x]])):
 			if (ongoingQuestsRequirements[ongoingQuests[x]][z])[:5] == "Item:":
 				ongoingQuestsRequirements[ongoingQuests[x]][z] = ongoingQuestsRequirements[ongoingQuests[x]][z][5:]
-				print("      " + ongoingQuestsRequirements[ongoingQuests[x]][z])
+				cprint(("      " + ongoingQuestsRequirements[ongoingQuests[x]][z]), "grey", "on_white")
 			elif (ongoingQuestsRequirements[ongoingQuests[x]][z])[:9] == "Location:":
 				ongoingQuestsRequirements[ongoingQuests[x]][z] = ongoingQuestsRequirements[ongoingQuests[x]][z][9:]
-				print("      Reach " + ongoingQuestsRequirements[ongoingQuests[x]][z])
-		print("    Rewards:")
+				cprint(("      Reach " + ongoingQuestsRequirements[ongoingQuests[x]][z]), "grey", "on_white")
+		cprint(("    Rewards:"), "grey", "on_white")
 		for y in range(0,len(ongoingQuestsRewards[ongoingQuests[x]])):
 			if (ongoingQuestsRewards[ongoingQuests[x]][y])[:4] == "EXP:":
 				ongoingQuestsRewards[ongoingQuests[x]][y] = ongoingQuestsRewards[ongoingQuests[x]][y][4:]
-				print("      " + ongoingQuestsRewards[ongoingQuests[x]][y] + " EXP")
+				cprint(("      " + ongoingQuestsRewards[ongoingQuests[x]][y] + " EXP"), "grey", "on_white")
 
 
 

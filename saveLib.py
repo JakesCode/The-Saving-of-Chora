@@ -63,3 +63,34 @@ def load():
 		ongoingQuestsRequirements = ast.literal_eval(ongoingQuestsRequirementsString)
 
 	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements
+
+# position = 1
+# health = 10
+# strength = 6
+# exp = 100
+# playerLevel = 2
+# playerSpells = ["Magic", "Shit"]
+# playerClass = None
+# seenDialogues = 2
+# rank = "Frajan"
+# playerItems = ["Pendant"]
+# itemDesc = {"Pendant": "Shiny"}
+# specialItems = []
+# mana = 20
+# ongoingQuests = ["Bob"]
+# ongoingQuestsDescription = {"Bob": "Whoa dude"}
+# ongoingQuestsRewards = {"Bob": ["EXP:400"]}
+# ongoingQuestsRequirements = {"Bob": ["Location: Emelle Village"]}
+
+
+# save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
+
+# print(playerItems)
+
+# input("")
+
+# position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = load()
+
+# print(playerItems)
+
+# input("")
