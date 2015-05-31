@@ -92,6 +92,6 @@ def useSpell(playerSpells, mana):
 		print("Please enter something valid.")
 		input("")
 		os.system("cls")
-		useSpell(playerSpells)
+		useSpell(playerSpells, mana)
 
 	return playerDamageToEnemy, sendEffect, mana
