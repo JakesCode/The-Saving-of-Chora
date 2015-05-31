@@ -8,7 +8,13 @@ def initLocations():
 	"Cobalt Beck Bridge -*-": "The bridge is sturdy, built with wood from the Jaded Forest.",
 	"Cobalt Beck --*": "The path becomes wider here as you enter the next village.",
 	"Emelle Village": "Wooden huts populate the lush green land. The village is famous for its fish.",
-	"Shaded Path": "A small path in the shade."}
+	"Shaded Path": "A small path in the shade.",
+	"Lunar Woods Entrance *-----": "A stunning, blue-tinted forest entrance.",
+	"Lunar Woods Path -*----": "Glowing flowers dance in the gentle breeze.",
+	"Lunar Woods River --*---": "Turquoise water flows past light-coloured rocks.",
+	"Lunar Woods Flower Patch ---*--": "Blue flowers sway with the wind.",
+	"Lunar Woods Clearing ----*-": "Light from outside the forest penetrates the glow of the flowers.",
+	"Lunar Woods Opening -----*": "The blue glow of the forest weakens as you get further away."}
 
 	locations = ["Home Town",
 	"Jaded Forest Entrance *---",
@@ -19,15 +25,22 @@ def initLocations():
 	"Cobalt Beck Bridge -*-",
 	"Cobalt Beck --*",
 	"Emelle Village",
-	"Shaded Path"]
+	"Shaded Path",
+	"Lunar Woods Entrance *-----",
+	"Lunar Woods Path -*----",
+	"Lunar Woods River --*---",
+	"Lunar Woods Flower Patch ---*--",
+	"Lunar Woods Clearing ----*-",
+	"Lunar Woods Opening -----*"]
 
 	hostileLocations = ["Jaded Forest Path -*--",
 	"Jaded Forest Clearing --*-",
-	"Cobalt Beck Bridge -*-"]
+	"Cobalt Beck Bridge -*-",
+	"Lunar Woods Flower Patch ---*--"]
 	return locations, descriptions, hostileLocations
 
 
-def enemies(position):
+def enemies(position, ongoingQuests):
 	names = ["Cinderman", "Thornfoot"]
 	stats = {"Cinderman": 10,
 	"Thornfoot": 15}
@@ -43,6 +56,18 @@ def enemies(position):
 		"Thornfoot": 2,
 		"Boulderchild": 4,
 		"Vextooth": 4}
+	elif "Kill the Nightbody" in ongoingQuests and position == 3:
+		names = ["Nightbody"]
+		stats = {"Nightbody": 40}
+		enemyDamage = {"Nightbody": 6}
+	elif int(position) > 10 and position < 16:
+		names = ["Blue Flower Nymph", "Purple Flower Nymph", "Red Flower Nymph"]
+		stats = {"Blue Flower Nymph": 5,
+		"Purple Flower Nymph": 5,
+		"Red Flower Nymph": 5}
+		enemyDamage = {"Blue Flower Nymph": 2,
+		"Purple Flower Nymph": 2,
+		"Red Flower Nymph": 2}
 
 	return names, stats, enemyDamage
 
@@ -100,7 +125,7 @@ def effect(givenEffect):
 
 	return givenEffect
 
-def battle(strength, mana):
+def battle(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position):
 	global enemyBaseHealth
 	global health
 	global exp
@@ -111,8 +136,18 @@ def battle(strength, mana):
 	print("")
 	os.system("cls")
 	mainScreen(hostileLocations)
-	cprint((names[enemyChoice] + " appeared!"), "white", "on_red")
-	cprint(("Enemy has " + str(stats[names[enemyChoice]]) + " health!"), "white", "on_red")
+	if "Kill the Nightbody" in ongoingQuests and position == 3:
+		cprint(("The trees above you shake violently as a large creature runs through it."), "white", "on_red")
+		cprint(("As you stand, rooted to the spot with fear, a mass of dark flesh and seething\nred eyes appears before you, as if from thin air."), "white", "on_red")
+		input("")
+		cprint(("As your brain seeks to flee, you feel a rush of adrenaline surge within you.\nGrabbing the Silver Sword you obtained from Zaor, you hold it high and\nprepare to run at the beast."), "white", "on_red")
+		cprint(("The Nightbody stares as you with gigantic flame-red eyes and, with a\npiercing shriek, advances towards you...."), "white", "on_red")
+		input("")
+		os.system("cls")
+		mainScreen(hostileLocations)
+	else:
+		cprint((names[enemyChoice] + " appeared!"), "white", "on_red")
+		cprint(("Enemy has " + str(stats[names[enemyChoice]]) + " health!"), "white", "on_red")
 	print("")
 
 	enemyBaseHealth = int(stats[names[enemyChoice]])
@@ -249,13 +284,20 @@ def battle(strength, mana):
 	int(endNumber)
 	exp += endNumber
 	input("")
+	os.system("cls")
+	mainScreen(hostileLocations)
+	if "Kill the Nightbody" in ongoingQuests and position == 3:
+		ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, exp, health = questLib.completeQuest("Kill the Nightbody", ongoingQuests, ongoingQuestsDescription, ongoingQuestsRequirements,  ongoingQuestsRewards, playerItems, itemDesc, seenDialogues, specialItems, exp, health)
+	input("")
 
-def monsterChance(strength, mana):
+def monsterChance(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position):
 	chance = randint(1,20)
 	if any(locations[int(position)] in s for s in hostileLocations):
 		cprint("(Location is hostile.... watch your step!)", "blue", "on_yellow")
 		if chance < 5:
-			battle(strength, mana)
+			battle(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position)
+		elif "Kill the Nightbody" in ongoingQuests and position == 3:
+			battle(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position)
 
 def information():
 	os.system("cls")
@@ -279,6 +321,7 @@ def showHelp():
 	cprint(("I: View your items."), "blue", "on_white")
 	cprint(("B: Move back one location."), "blue", "on_white")
 	cprint(("F: Save the game."), "blue", "on_white")
+	cprint(("Q: View your quests."), "blue", "on_white")
 	print("")
 	print("During battle, colours are used to signal whose turn it is.")
 	cprint("White on BLUE signals that it's YOUR turn.", "white", "on_blue")
@@ -309,7 +352,7 @@ def parseCommand(command, position):
 	if command == "c":
 		information()
 	if command == "f":
-		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana)
+		saveLib.save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 	if command == "":
 		cprint(("You chose to move on...."), "grey", "on_cyan")
 		position += 1
@@ -319,6 +362,8 @@ def parseCommand(command, position):
 		else:
 			cprint(("You chose to go back...."), "grey", "on_cyan")
 			position -= 1
+	if command == "q":
+		questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 
 	if command == "i":
 		os.system("cls")
@@ -347,7 +392,7 @@ def parseCommand(command, position):
 
 	return position
 
-def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
+def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, exp, health):
 	if position == 1 and seenDialogues == 1:
 		os.system("cls")
 		mainScreen(hostileLocations)
@@ -391,22 +436,13 @@ def checkForEvents(playerItems, itemDesc, seenDialogues, specialItems):
 	if position == 8 and seenDialogues == 3:
 		os.system("cls")
 		mainScreen(hostileLocations)
-		dialogueLib.say("Alcea", "Oh my! Did you just come from the Jaded Forest?", good)
-		dialogueLib.say("Alcea", "Many have rested here recently due to wounds; it seems that \nwe're losing the forest to the beasts.", good)
-		dialogueLib.say("Alcea", "It's a terrible shame; if we lose the forest to beasts, then \nwe'll lose access to Home Town....", good)
-		dialogueLib.say("Alcea", "If you want to stay here and rest for a while, you're more than welcome to.", good)
-		dialogueLib.say("Alcea", "My father, Zaor, will take you in. He'll even give you a potion\nfor half the price of the shops. He was once wounded from fighting, and the\nprices of potions made everything worse - selling them for half price is his\nway of giving something back.", good)
-		dialogueLib.say("Zaor", "Ah! You must be from Home Town. The forest is getting worse;\njust yesterday I saw hideous beasts clambering in the treetops - why can't we\n just all group together and kill the damn things?", alternate)
-		dialogueLib.say("Zaor", "But still - it seems as though there's hope. If you got through\nthe forest alive, no doubt you're a good fighter....", alternate)
-		dialogueLib.say("Zaor", "You know what? My fighting days are over. Take this:", alternate)
-		playerItems, itemDesc, specialItems = itemLib.addItem("Silver Sword", "A beautifully crafted blade. The name 'Zaor' is etched into the side.", playerItems, itemDesc, specialItems, "attack")
-		dialogueLib.say("Zaor", "I'm sorry about the name in the side, but it'll do you good.\nI've had that sword for 38 years now, and it's never failed my once. Good luck!", alternate)
-		dialogueLib.say("Alcea", "Oh, wait!", good)
-		dialogueLib.say("Alcea", "If you're going to fight more beasts, you'll need potions!", good)
-		dialogueLib.say("Alcea", "I've got some in my bag, but I won't be fighting anything.\nYou need them more than me!", good)
-		playerItems, itemDesc, specialItems = itemLib.addItem("Potion", "A bottle of mysterious red liquid.", playerItems, itemDesc, specialItems, "heal")
-		playerItems, itemDesc, specialItems = itemLib.addItem("Mana Potion", "A bottle of swirling blue liquid.", playerItems, itemDesc, specialItems, "mana")
+		ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, exp, health = questLib.completeQuest("Reach Emelle Village", ongoingQuests, ongoingQuestsDescription, ongoingQuestsRequirements,  ongoingQuestsRewards, playerItems, itemDesc, seenDialogues, specialItems, exp, health)
+		seenDialogues += 1
 
+	if position == 8 and "Filled Vial" in playerItems and seenDialogues == 4:
+		os.system("cls")
+		mainScreen(hostileLocations)
+		ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, exp, health = questLib.completeQuest("Return to Emelle Village", ongoingQuests, ongoingQuestsDescription, ongoingQuestsRequirements,  ongoingQuestsRewards, playerItems, itemDesc, seenDialogues, specialItems, exp, health)
 		seenDialogues += 1
 
 	return seenDialogues
@@ -506,12 +542,16 @@ def intro(seenDialogues):
 		print("Please enter something valid....")
 		input("")
 		os.system("cls")
-		seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
+		seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 
 	print("Ah! So you've joined the rank of " + rank + "!")
 	print("That means you'll be starting with " + str(health) + " health.")
 	int(health)
-
+	print("")
+	print("I've also got a quest for you!")
+	print("Make it to Emelle Village, and you'll meet some people.")
+	print("Do it and you'll get 50 EXP!")
+	questLib.addQuest("Reach Emelle Village", "Here we go!", ["Location:Emelle Village"], ["EXP:50"], None, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 	print("")
 	print("Very well then! If you're stuck at any time, type 'help'.")
 	print("I wish you luck! Come back and see us sometime....")
@@ -537,12 +577,13 @@ def init():
 	# rank (given by the beginning bit)
 
 	locations, descriptions, hostileLocations = initLocations()
-	names, stats, enemyDamage = enemies(position)
 	spellDict, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells = spellLib.spells()
 	itemDesc, playerItems, specialItems = itemLib.itemInit()
+	ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = questLib.questInit()
+	names, stats, enemyDamage = enemies(position, ongoingQuests)
 
 
-	return position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana
+	return position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements
 
 # def addLevel(amount):
 # 	# Making things easier for the 'checkExpLevel' function. #
@@ -587,6 +628,7 @@ import spellLib
 import itemLib
 import dialogueLib
 import saveLib
+import questLib
 
 # Other Libraries #
 
@@ -607,7 +649,7 @@ good, bad, alternate = dialogueLib.initPresets()
 
 ######################## END OF SETUP ###########################
 
-os.system("title The Saving of Chora")
+os.system("title The Saving of Chora - A Python Text Adventure Game by Jake Stringer")
 
 titleScreen()
 input("")
@@ -618,11 +660,10 @@ cprint("Enter 'y' for yes, 'n' for no, or 'r' to make a new file: ", "white", "o
 saveChoice = input("?: ")
 saveChoice.lower()
 if saveChoice == "y":
-	global hostileLocations
 
-	position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana = saveLib.load()
+	position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = saveLib.load()
 	locations, descriptions, hostileLocations = initLocations()
-	names, stats, enemyDamage = enemies(position)
+	names, stats, enemyDamage = enemies(position, ongoingQuests)
 	spells, damage, specialSpells, specialSpellsKeys, spellDict, specialSpells = spellLib.spells()
 	cprint("Save file loaded successfully.", "white", "on_blue")
 
@@ -654,6 +695,7 @@ if saveChoice == "y":
 		int(x)
 		cprint(("  (" + spellDict[playerSpells[x]] + ")"), "white", "on_blue")
 		cprint("  Deals " + str(damage[playerSpells[x]]) + " damage", "white", "on_blue")
+	questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
 		
 	print("")
 	cprint("Press the enter key to return to your game....", "grey", "on_yellow")
@@ -661,26 +703,31 @@ if saveChoice == "y":
 
 elif saveChoice == "n":
 	cprint("Save file not opened.", "white", "on_red")
-	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana = init()
+	input("")
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = init()
 	health, strength, rank, seenDialogues = intro(seenDialogues)
 elif saveChoice == "r":
 	saveLib.newGame()
-	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana = init()
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = init()
 	health, strength, rank, seenDialogues = intro(seenDialogues)
 	cprint("Save file has been wiped.", "white", "on_red")
 else:
 	print("Nothing valid entered.")
-
-
+	cprint("Save file not opened.", "white", "on_red")
+	input("")
+	position, exp, playerLevel, playerSpells, playerClass, seenDialogues, locations, descriptions, hostileLocations, names, stats, enemyDamage, damage, specialSpells, specialSpellsKeys, itemDesc, playerItems, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements = init()
+	health, strength, rank, seenDialogues = intro(seenDialogues)
 
 input("")
 os.system("cls")
 
 while 1<2:
+	names, stats, enemyDamage = enemies(position, ongoingQuests)
 	locations, descriptions, hostileLocations = initLocations()
 	mainScreen(hostileLocations)
-	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems)
-	monsterChance(strength, mana)
+	seenDialogues = checkForEvents(playerItems, itemDesc, seenDialogues, specialItems, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, exp, health)
+	# questLib.checkQuestCompletion(playerItems, ongoingQuestsRequirements, ongoingQuests, position, locations, ongoingQuestsRewards)
+	monsterChance(strength, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements, playerItems, itemDesc, seenDialogues, specialItems, position)
 	cprint("Type a command, type 'help', or press enter to move on.... ", "white", "on_blue")
 	command = input("?: ")
 	position = parseCommand(command, position)

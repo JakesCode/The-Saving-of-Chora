@@ -46,7 +46,10 @@ def useSpell(playerSpells, mana):
 		int(x)
 		cprint(("  (" + spellDict[playerSpells[x]] + ")"), "white", "on_blue")
 		cprint("  Deals " + str(damage[playerSpells[x]]) + " damage", "white", "on_blue")
-		cprint("  Costs " + str(damage[playerSpells[x]]) + " mana", "white", "on_blue")
+		manaCost = damage[playerSpells[x]]
+		manaCost/2
+		cprint("  Costs " + str(manaCost) + " mana", "white", "on_blue")
+		int(manaCost)
 		print("")
 	cprint("Please enter the number of the spell you wish to cast: ", "magenta", "on_white")
 	spellChoice = input("?: ")
@@ -59,9 +62,10 @@ def useSpell(playerSpells, mana):
 		if not(any(playerSpells[int(spellChoice)] in n for n in specialSpellsKeys)) and int(mana) > damage[playerSpells[int(spellChoice)]]:
 			cprint(("You cast a " + playerSpells[int(spellChoice)] + " spell!"), "white", "on_magenta")
 			cprint(("Dealt " + str(damage[playerSpells[int(spellChoice)]]) + " damage!"), "white", "on_magenta")
-			cprint(("Used " + str(damage[playerSpells[int(spellChoice)]]) + " mana."), "white", "on_magenta")
+			cprint(("Used " + str(manaCost) + " mana."), "white", "on_magenta")
+			int(manaCost)
 			playerDamageToEnemy = int(damage[playerSpells[int(spellChoice)]])
-			mana -= int(damage[playerSpells[int(spellChoice)]])
+			mana -= manaCost
 			int(playerDamageToEnemy)
 
 			# Since it's not in the special list of spells, no effect will be applied to the enemy. #

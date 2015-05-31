@@ -1,13 +1,17 @@
-5
-22
+1
+24
 4
-176
+0
 1
 ['Blink']
 None
-3
+2
 Frajan
-['Pendant']
-{'Pendant': 'A piece of jewellery, covered in small gems.'}
+[]
+{}
 {}
 0
+['Reach Emelle Village']
+{'Reach Emelle Village': 'Here we go!'}
+{'Reach Emelle Village': ['EXP:50']}
+{'Reach Emelle Village': ['Location:Emelle Village']}

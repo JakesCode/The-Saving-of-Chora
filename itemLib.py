@@ -20,9 +20,14 @@ def useItems(playerItems, itemDesc, specialItems, health, strength, mana):
 			if specialItems[playerItems[x]] == "heal":
 				cprint(("Heals the player by 20 points."), "grey", "on_cyan")
 			elif specialItems[playerItems[x]] == "attack":
-				cprint(("Raises the strength of the player by 4."), "grey", "on_cyan")
+				cprint(("Raises the strength of the player by 2, but deals 5 damage to the player."), "grey", "on_cyan")
 			elif specialItems[playerItems[x]] == "mana":
 				cprint(("Gives the player 10 mana."), "grey", "on_cyan")
+			elif specialItems[playerItems[x]] == "heal+":
+				cprint(("Heals the player by 50 points."), "grey", "on_cyan")
+			elif specialItems[playerItems[x]] == "heal++":
+				cprint(("Heals the player by 100 points."), "grey", "on_cyan")
+				cprint(("Increases strength by 6."), "grey", "on_cyan")
 		print("")
 	if len(playerItems) == 0:
 		cprint("No items to show!", "blue", "on_white")
@@ -38,11 +43,25 @@ def useItems(playerItems, itemDesc, specialItems, health, strength, mana):
 					del specialItems[str(playerItems[int(itemChoice)])]
 					del playerItems[int(itemChoice)]
 				elif specialItems[str(playerItems[int(itemChoice)])] == "attack":
-					strength += 4
-					cprint(("Strength increased by 4."), "magenta", "on_white")
+					strength += 2
+					cprint(("Strength increased by 24."), "magenta", "on_white")
+					health -= 5
+					cprint(("You took 5 damage!"), "magenta", "on_white")
 				elif specialItems[str(playerItems[int(itemChoice)])] == "mana":
 					mana += 10
 					cprint(("Gained 10 mana."), "magenta", "on_white")
+					del specialItems[str(playerItems[int(itemChoice)])]
+					del playerItems[int(itemChoice)]
+				elif specialItems[str(playerItems[int(itemChoice)])] == "heal+":
+					health += 50
+					cprint(("Gained 50 health."), "magenta", "on_white")
+					del specialItems[str(playerItems[int(itemChoice)])]
+					del playerItems[int(itemChoice)]
+				elif specialItems[str(playerItems[int(itemChoice)])] == "heal++":
+					health += 100
+					cprint(("Gained 100 health."), "magenta", "on_white")
+					strength += 6
+					cprint(("Strength increased by 6."), "magenta", "on_white")
 					del specialItems[str(playerItems[int(itemChoice)])]
 					del playerItems[int(itemChoice)]
 			else:
@@ -83,7 +102,7 @@ def removeItem(itemName, playerItems, itemDesc):
 	playerItems.remove(itemName)
 	del itemDesc[itemName]
 
-	cprint((itemName.upper() + " has been removed from your inventory."), "white", "on_blue")
-	input("")
+	# cprint((itemName.upper() + " has been removed from your inventory."), "white", "on_blue")
+	# input("")
 
 	return playerItems, itemDesc

@@ -4,15 +4,139 @@
 		"selected_items":
 		[
 			[
-				"player",
-				"playerSpells"
+				"ong",
+				"ongoingQuestsRequirements"
 			],
 			[
-				"spe",
-				"spellsFromSaveFile"
+				"que",
+				"questDescription"
+			],
+			[
+				"ongoingQuestsR",
+				"ongoingQuestsRequirements"
+			],
+			[
+				"ques",
+				"questName"
+			],
+			[
+				"on",
+				"ongoingQuests"
+			],
+			[
+				"questr",
+				"questDescription"
+			],
+			[
+				"ongo",
+				"ongoingQuestsDescription"
+			],
+			[
+				"seen",
+				"seenDialogues"
+			],
+			[
+				"ite",
+				"itemLib"
+			],
+			[
+				"eve",
+				"eventNumber"
+			],
+			[
+				"qu",
+				"questToBeCompleted"
+			],
+			[
+				"ke",
+				"keysList"
+			],
+			[
+				"to",
+				"toRemove"
+			],
+			[
+				"item",
+				"itemLib"
+			],
+			[
+				"cl",
+				"clonedRequirements"
+			],
+			[
+				"quest",
+				"questLib"
+			],
+			[
+				"ongoingQuestsRe",
+				"ongoingQuestsRequirements"
+			],
+			[
+				"even",
+				"event"
+			],
+			[
+				"re",
+				"rewards"
+			],
+			[
+				"q",
+				"questName"
+			],
+			[
+				"r",
+				"requirements"
+			],
+			[
+				"rer",
+				"requirements"
+			],
+			[
+				"event",
+				"eventNumber"
+			],
+			[
+				"mana",
+				"manaCost"
 			],
 			[
 				"pla",
+				"playerSpells"
+			],
+			[
+				"s",
+				"sound"
+			],
+			[
+				"sound",
+				"soundChoice"
+			],
+			[
+				"spe",
+				"specialSpells"
+			],
+			[
+				"spell",
+				"spellDict"
+			],
+			[
+				"des",
+				"descriptions"
+			],
+			[
+				"player",
+				"playerItems"
+			],
+			[
+				"sa",
+				"saveGame"
+			],
+			[
+				"pl",
+				"playerSpells_list"
+			],
+			[
+				"playe",
 				"playerSpells"
 			],
 			[
@@ -28,24 +152,12 @@
 				"saveChoice"
 			],
 			[
-				"sa",
-				"saveChoice"
-			],
-			[
 				"import",
 				"importedData"
 			],
 			[
-				"pl",
-				"playerSpells"
-			],
-			[
 				"itm",
 				"itemDesc"
-			],
-			[
-				"playe",
-				"playerSpells"
 			],
 			[
 				"play",
@@ -68,10 +180,6 @@
 				"battleChoice"
 			],
 			[
-				"item",
-				"itemChoice"
-			],
-			[
 				"add",
 				"addItem"
 			],
@@ -92,16 +200,8 @@
 				"seenDialogues"
 			],
 			[
-				"ite",
-				"itemDesc"
-			],
-			[
 				"view",
 				"viewItems"
-			],
-			[
-				"spell",
-				"spellLib"
 			],
 			[
 				"in",
@@ -112,20 +212,12 @@
 				"enemyGo"
 			],
 			[
-				"on",
-				"on_red"
-			],
-			[
 				"PLAYER",
 				"playerDamageToEnemy"
 			],
 			[
 				"ene",
 				"enemyHealth"
-			],
-			[
-				"s",
-				"spellChoice"
 			],
 			[
 				"B",
@@ -138,10 +230,6 @@
 			[
 				"star",
 				"startNumber"
-			],
-			[
-				"cl",
-				"classChoice"
 			],
 			[
 				"new",
@@ -222,10 +310,6 @@
 			[
 				"Is",
 				"is"
-			],
-			[
-				"to",
-				"toBeAdded"
 			],
 			[
 				"batt",
@@ -356,10 +440,10 @@
 	"buffers":
 	[
 		{
-			"file": "spellLib.py",
+			"file": "game.py",
 			"settings":
 			{
-				"buffer_size": 2944,
+				"buffer_size": 25812,
 				"line_ending": "Windows"
 			}
 		},
@@ -367,15 +451,15 @@
 			"file": "itemLib.py",
 			"settings":
 			{
-				"buffer_size": 2612,
+				"buffer_size": 3069,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "dialogueLib.py",
+			"file": "spellLib.py",
 			"settings":
 			{
-				"buffer_size": 571,
+				"buffer_size": 3441,
 				"line_ending": "Windows"
 			}
 		},
@@ -383,23 +467,23 @@
 			"file": "saveLib.py",
 			"settings":
 			{
-				"buffer_size": 1340,
+				"buffer_size": 1740,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "saveGame.dat",
+			"file": "questLib.py",
 			"settings":
 			{
-				"buffer_size": 41,
+				"buffer_size": 8979,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "game.py",
+			"file": "dialogueLib.py",
 			"settings":
 			{
-				"buffer_size": 22430,
+				"buffer_size": 582,
 				"line_ending": "Windows"
 			}
 		}
@@ -436,6 +520,10 @@
 				"Colorsublime: Install Theme"
 			],
 			[
+				"in",
+				"Colorsublime: Install Theme"
+			],
+			[
 				"inst",
 				"Package Control: Install Package"
 			],
@@ -453,10 +541,6 @@
 			],
 			[
 				"instlal",
-				"Colorsublime: Install Theme"
-			],
-			[
-				"in",
 				"Colorsublime: Install Theme"
 			],
 			[
@@ -493,8 +577,9 @@
 	],
 	"file_history":
 	[
-		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/saveGame.dat",
 		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/dialogueLib.py",
+		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/saveGame.dat",
+		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/saveLib.py",
 		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/itemLib.py",
 		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/game.py",
 		"/C/Users/Jake (King of Cool)/Documents/GitHub/The-Saving-of-Chora/spellLib.py",
@@ -543,7 +628,7 @@
 	],
 	"find":
 	{
-		"height": 31.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -557,6 +642,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"def ",
+			"ongoingQuestsEvents",
+			"ongoingQuestsRewards",
+			"heal",
+			"perk",
+			"heal",
+			"\")\n",
 			"mainScreen()",
 			"locations",
 			"useitems",
@@ -623,38 +715,39 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "spellLib.py",
+					"file": "game.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2944,
+						"buffer_size": 25812,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1619,
-								1619
+								3371,
+								3371
 							]
 						],
 						"settings":
 						{
+							"open_with_edit": true,
 							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"translate_tabs_to_spaces": false,
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 161.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -663,15 +756,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2612,
+						"buffer_size": 3069,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1976,
-								1976
+								2234,
+								2234
 							]
 						],
 						"settings":
@@ -682,27 +775,27 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 924.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "dialogueLib.py",
+					"file": "spellLib.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 571,
+						"buffer_size": 3441,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								234,
-								234
+								1268,
+								1268
 							]
 						],
 						"settings":
@@ -713,7 +806,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 418.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
@@ -725,90 +818,98 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1340,
+						"buffer_size": 1740,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								864,
-								864
+								959,
+								959
 							]
 						],
 						"settings":
 						{
-							"open_with_edit": true,
 							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 207.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "saveGame.dat",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 41,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								21,
-								21
-							]
-						],
-						"settings":
-						{
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
 					"type": "text"
-				},
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
 				{
-					"buffer": 5,
-					"file": "game.py",
+					"buffer": 4,
+					"file": "questLib.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 22430,
+						"buffer_size": 8979,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								21767,
-								21767
+								5137,
+								5137
 							]
 						],
 						"settings":
 						{
 							"open_with_edit": true,
+							"rulers":
+							[
+							],
 							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false,
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15160.0,
+						"translation.y": 1738.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "dialogueLib.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 582,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -831,11 +932,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.475318798848,
 			1.0
 		],
 		"rows":

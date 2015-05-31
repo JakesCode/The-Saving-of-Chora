@@ -13,9 +13,9 @@ def newGame():
 	newFile.write("")
 
 
-def save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana):
+def save(position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements):
 	playerClass = None
-	toSave = [position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana]
+	toSave = [position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements]
 	with open("saveGame.dat", "w") as saveFile:
 		for x in range(0,len(toSave)):
 			saveFile.write(str(toSave[x]) + "\n")
@@ -50,4 +50,16 @@ def load():
 		manaString = importedData[12]
 		mana = ast.literal_eval(manaString)
 
-	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana
+		ongoingQuestsString = importedData[13]
+		ongoingQuests = ast.literal_eval(ongoingQuestsString)
+
+		ongoingQuestsDescriptionString = importedData[14]
+		ongoingQuestsDescription = ast.literal_eval(ongoingQuestsDescriptionString)
+
+		ongoingQuestsRewardsString = importedData[15]
+		ongoingQuestsRewards = ast.literal_eval(ongoingQuestsRewardsString)
+
+		ongoingQuestsRequirementsString = importedData[16]
+		ongoingQuestsRequirements = ast.literal_eval(ongoingQuestsRequirementsString)
+
+	return position, health, strength, exp, playerLevel, playerSpells, playerClass, seenDialogues, rank, playerItems, itemDesc, specialItems, mana, ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements
