@@ -365,7 +365,10 @@ def parseCommand(command, position, playerItems):
 			cprint(("You chose to go back...."), "grey", "on_cyan")
 			position -= 1
 	if command == "q":
-		questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
+		if len(ongoingQuests) > 0:
+			questLib.viewQuests(ongoingQuests, ongoingQuestsDescription, ongoingQuestsRewards, ongoingQuestsRequirements)
+		else:
+			cprint(("No quests! You're free to explore!"), "white", "on_red")
 	if command == "e":
 		sys.exit()
 
